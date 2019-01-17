@@ -1,0 +1,29 @@
+language:
+  - ruby
+rvm:
+  - 2.5.3
+cache:
+  - bundler
+services:
+  - postgresql
+before_install:
+  - "echo '--colour' > ~/.rspec"
+  - "echo 'gem: --no-document' > ~/.gemrc"
+install:
+  - bin/setup
+branches:
+  only:
+    - master
+notifications:
+  email: false
+sudo: false
+
+addons:
+  postgresql: "10"
+  apt:
+    packages:
+    - postgresql-10
+    - postgresql-client-10
+env:
+  global:
+  - PGPORT=5433
