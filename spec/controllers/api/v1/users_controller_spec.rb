@@ -84,4 +84,13 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       end
     end
   end
+
+  describe "Delete #destroy" do
+    before do
+      @user = create :user
+      delete :destroy, params: { id: @user.id }
+    end
+
+    it { should respond_with 204 }
+  end
 end
