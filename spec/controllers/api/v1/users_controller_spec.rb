@@ -10,8 +10,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     it { should respond_with 200 }
 
     it 'returns a user response' do
-      json_response = JSON.parse response.body, symbolize_names: true
-      expect(json_response[:email]).to eq @user.email
+      expect(json_response[:data][:attributes][:email]).to eq @user.email
     end
   end
 
@@ -25,8 +24,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       it { should respond_with 201 }
 
       it 'returns the user record just created' do
-        json_response = JSON.parse response.body, symbolize_names: true
-        expect(json_response[:email]).to eq @user_attributes[:email]
+        expect(json_response[:data][:attributes][:email]).to eq @user_attributes[:email]
       end
     end
 
@@ -39,13 +37,11 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       it { should respond_with 422 }
 
       it 'render errors json' do
-        json_response = JSON.parse response.body, symbolize_names: true
         expect(json_response).to have_key(:errors)
       end
 
       it 'render errors json with details message' do
-        json_response = JSON.parse response.body, symbolize_names: true
-        expect(json_response[:errors][:email]).to include("can't be blank")
+        expect(json_response[:errors].first[:detail]).to include("can't be blank")
       end
     end
   end
@@ -61,8 +57,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       it { should respond_with 200 }
 
       it "renders json for the updated user" do
-        json_response = JSON.parse response.body, symbolize_names: true
-        expect(json_response[:email]).to eq 'new_user@toys.com'
+        expect(json_response[:data][:attributes][:email]).to eq 'new_user@toys.com'
       end
     end
 
@@ -76,13 +71,11 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       it { should respond_with 422 }
 
       it "renders an errors json" do
-        json_response = JSON.parse response.body, symbolize_names: true
         expect(json_response).to have_key(:errors)
       end
 
       it "renders the json errors on why the user could not be updated" do
-        json_response = JSON.parse response.body, symbolize_names: true
-        expect(json_response[:errors][:email]).to include('is invalid')
+        expect(json_response[:errors].first[:detail]).to include('is invalid')
       end
     end
   end
