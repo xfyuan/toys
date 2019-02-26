@@ -64,4 +64,32 @@ RSpec.describe Toy, type: :model do
       expect(Toy.recent).to match_array([@toy3, @toy2, @toy4, @toy1])
     end
   end
+
+  describe '#search' do
+    before :each do
+      @toy1 = create :toy, price: 100, title: 'Ruby boy'
+      @toy2 = create :toy, price: 50, title: 'Elixir girl'
+      @toy3 = create :toy, price: 150, title: 'Redis man'
+      @toy4 = create :toy, price: 99, title: 'Ruby on Rails superman'
+    end
+
+    it 'when no condition matches' do
+      search_hash = { keyword: 'Ruby', min_price: 150 }
+      expect(Toy.search(search_hash)).to be_empty
+    end
+
+    it 'when match 2 search params' do
+      search_hash = { keyword: 'Ruby', min_price: 100 }
+      expect(Toy.search(search_hash)).to match_array([@toy1])
+    end
+
+    it 'when match 3 search params' do
+      search_hash = { keyword: 'Ruby', min_price: 60, max_price: 180 }
+      expect(Toy.search(search_hash)).to match_array([@toy4, @toy1])
+    end
+
+    it 'when no params' do
+      expect(Toy.search).to match_array([@toy4, @toy3, @toy2, @toy1])
+    end
+  end
 end
