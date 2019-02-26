@@ -19,4 +19,49 @@ RSpec.describe Toy, type: :model do
   it { should validate_numericality_of(:price).is_greater_than_or_equal_to(0) }
 
   it { should belong_to :user }
+
+  describe 'when search toy title by scope filter_by_title' do
+    before :each do
+      @toy1 = create :toy, title: 'Ruby boy'
+      @toy2 = create :toy, title: 'Elixir girl'
+      @toy3 = create :toy, title: 'Redis man'
+      @toy4 = create :toy, title: 'Ruby on Rails superman'
+    end
+
+    it 'returns correct toys matching' do
+      expect(Toy.filter_by_title('Ruby')).to match_array([@toy1, @toy4])
+    end
+  end
+
+  describe 'when search toy price by scope' do
+    before :each do
+      @toy1 = create :toy, price: 100
+      @toy2 = create :toy, price: 50
+      @toy3 = create :toy, price: 150
+      @toy4 = create :toy, price: 99
+    end
+
+    it 'returns toys which are above or equal to the price' do
+      expect(Toy.above_or_equal_to_price(100)).to match_array([@toy1, @toy3])
+    end
+
+    it 'returns toys which are below or equal to the price' do
+      expect(Toy.below_or_equal_to_price(99)).to match_array([@toy2, @toy4])
+    end
+  end
+
+  describe 'when get recent toys by scope' do
+    before :each do
+      @toy1 = create :toy, price: 100
+      @toy2 = create :toy, price: 50
+      @toy3 = create :toy, price: 150
+      @toy4 = create :toy, price: 99
+      @toy2.touch
+      @toy3.touch
+    end
+
+    it 'returns recent updated toys' do
+      expect(Toy.recent).to match_array([@toy3, @toy2, @toy4, @toy1])
+    end
+  end
 end
