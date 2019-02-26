@@ -12,6 +12,10 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     it 'returns a user response' do
       expect(json_response[:data][:attributes][:email]).to eq @user.email
     end
+
+    it 'has the toys as embeded object' do
+      expect(json_response[:data][:relationships][:toys][:data]).to eq []
+    end
   end
 
   describe 'Post #create' do

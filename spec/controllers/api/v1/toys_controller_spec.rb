@@ -12,11 +12,16 @@ RSpec.describe Api::V1::ToysController, type: :controller do
     it 'returns a toy record' do
       expect(json_response[:data][:attributes][:title]).to eq @toy.title
     end
+
+    it 'has the user as a embeded relationship object' do
+      expect(json_response[:data][:relationships][:user][:data][:id].to_i).to eq @toy.user.id
+    end
   end
 
   describe "Get #index" do
     before :each do
-      4.times { create :toy }
+      @user = create :user
+      4.times { create :toy, user: @user }
       get :index
     end
 
@@ -24,6 +29,12 @@ RSpec.describe Api::V1::ToysController, type: :controller do
 
     it 'returns 4 toy records' do
       expect(json_response[:data].count).to eq 4
+    end
+
+    it 'returns the user object into each toy' do
+      json_response[:data].each do |toy|
+        expect(toy[:relationships][:user][:data][:id].to_i).to eq @user.id
+      end
     end
   end
 
