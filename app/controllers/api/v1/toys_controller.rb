@@ -2,7 +2,7 @@ class Api::V1::ToysController < ApplicationController
   before_action :authenticate_with_token!, only: [:create]
 
   def index
-    render json: ToySerializer.new(Toy.all)
+    render json: ToySerializer.new(Toy.search(params))
   end
 
   def show
