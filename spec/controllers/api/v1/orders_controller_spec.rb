@@ -39,4 +39,44 @@ RSpec.describe Api::V1::OrdersController, type: :controller do
       expect(toys_response.first[:id].to_i).to eq @toy.id
     end
   end
+
+  describe 'Post #create' do
+    context 'when created successfully' do
+      before :each do
+        current_user = create :user
+        api_authorization_header current_user.auth_token
+
+        @toy1 = create :toy
+        @toy2 = create :toy
+        post :create, params: { user_id: current_user.id, order: { total: 100, toy_ids: [@toy1.id, @toy2.id] } }
+      end
+
+      it { should respond_with 201 }
+
+      it 'returns the user order record' do
+        expect(json_response[:data]).to be_present
+      end
+    end
+
+    context 'when not created' do
+      before :each do
+        current_user = create :user
+        api_authorization_header current_user.auth_token
+
+        @toy1 = create :toy
+        @toy2 = create :toy
+        post :create, params: { user_id: current_user.id, order: { total: nil, toy_ids: [] } }
+      end
+
+      it { should respond_with 422 }
+
+      it 'renders an errors json' do
+        expect(json_response).to have_key(:errors)
+      end
+
+      it 'renders why the user could not be created' do
+        expect(json_response[:errors].first[:detail]).to include 'is not a number'
+      end
+    end
+  end
 end
