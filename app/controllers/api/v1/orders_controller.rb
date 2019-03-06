@@ -22,6 +22,6 @@ class Api::V1::OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:order).permit(:total, toy_ids: [])
+    params.require(:order).permit(toy_ids: [])
   end
 end
