@@ -20,6 +20,7 @@ RSpec.describe User, type: :model do
   it { should allow_value('example@domain.com').for(:email) }
 
   it { should have_many :toys }
+  it { should have_many :orders }
 
   describe '#generate_authentication_token!' do
     it 'generate a unique token' do
