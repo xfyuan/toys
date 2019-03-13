@@ -11,4 +11,10 @@ class Order < ApplicationRecord
   def set_total!
     self.total = toys.map(&:price).sum
   end
+
+  def build_placements(toy_ids_and_quantities)
+    toy_ids_and_quantities.each do |(toy_id, quantity)|
+      self.placements.build(toy_id: toy_id, quantity: quantity)
+    end
+  end
 end
