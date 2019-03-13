@@ -9,7 +9,10 @@ class Order < ApplicationRecord
   has_many :toys, through: :placements
 
   def set_total!
-    self.total = toys.map(&:price).sum
+    self.total = 0
+    placements.each do |placement|
+      self.total += placement.toy.price * placement.quantity
+    end
   end
 
   def build_placements(toy_ids_and_quantities)

@@ -17,15 +17,18 @@ RSpec.describe Order, type: :model do
   it { should have_many(:toys).through :placements }
 
   describe '#set_total!' do
-    before :each do
+    before(:each) do
       toy1 = create :toy, price: 100
       toy2 = create :toy, price: 85
-
-      @order = build :order, toy_ids: [toy1.id, toy2.id]
+      placement1 = build :placement, toy: toy1, quantity: 3
+      placement2 = build :placement, toy: toy2, quantity: 4
+      @order = build :order
+      @order.placements << placement1
+      @order.placements << placement2
     end
 
-    it 'returns the total amount to pay for the toys' do
-      expect { @order.set_total! }.to change { order.total }.from(0).to(185)
+    it "returns the total amount to pay for the toys" do
+      expect { @order.set_total! }.to change { @order.total }.from(0).to(640)
     end
   end
 
