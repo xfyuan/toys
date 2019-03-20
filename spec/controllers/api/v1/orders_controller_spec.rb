@@ -44,17 +44,25 @@ RSpec.describe Api::V1::OrdersController, type: :controller do
     context 'when created successfully' do
       before :each do
         current_user = create :user
+        api_response_format
         api_authorization_header current_user.auth_token
 
         @toy1 = create :toy
         @toy2 = create :toy
-        post :create, params: { user_id: current_user.id, order: { toy_ids: [@toy1.id, @toy2.id] } }
+
+        post :create, params: { user_id: current_user.id, order: { toy_ids_and_quantities: [[@toy1.id, 2], [@toy2.id, 3]] } }
       end
 
       it { should respond_with 201 }
 
       it 'returns the user order record' do
         expect(json_response[:data]).to be_present
+      end
+
+      it 'returns the correct ordered toys' do
+        toys_response = json_response[:data][:relationships][:toys][:data]
+        expect(toys_response.count).to eq 2
+        expect(toys_response.map { |t| t[:id].to_i }).to match_array([@toy1.id, @toy2.id])
       end
     end
   end

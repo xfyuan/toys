@@ -9,5 +9,11 @@ module Request
     def api_authorization_header(token)
       request.headers['Authoriziation'] = token
     end
+
+    def api_response_format
+      format = Mime::Type.lookup_by_extension('json')
+      request.headers['Accept'] = "#{request.headers['Accept']}, #{format}"
+      request.headers['Content-Type'] = format.to_s
+    end
   end
 end
