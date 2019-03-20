@@ -43,4 +43,20 @@ RSpec.describe Order, type: :model do
       expect(order.build_placements(@toy_ids_and_quantities)).to be_present
     end
   end
+
+  describe "validate stock" do
+    before do
+      toy1 = create :toy, price: 100, quantity: 5
+      toy2 = create :toy, price: 85, quantity: 10
+      placement1 = build :placement, toy: toy1, quantity: 3
+      placement2 = build :placement, toy: toy2, quantity: 15
+      @order = build :order
+      @order.placements << placement1
+      @order.placements << placement2
+    end
+
+    it "is invalid beause toys stock is not enough" do
+      expect(@order).not_to be_valid
+    end
+  end
 end
