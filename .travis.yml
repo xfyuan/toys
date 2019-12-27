@@ -9,6 +9,8 @@ services:
 before_install:
   - "echo '--colour' > ~/.rspec"
   - "echo 'gem: --no-document' > ~/.gemrc"
+script:
+  - sonar-scanner
 install:
   - bin/setup
 branches:
@@ -17,6 +19,7 @@ branches:
 notifications:
   email: false
 sudo: false
+dist: trusty
 
 addons:
   postgresql: "10"
@@ -24,6 +27,10 @@ addons:
     packages:
     - postgresql-10
     - postgresql-client-10
+  sonarcloud:
+    organization: "xfyuan"
+    token:
+      secure: "QVf03w2HLL1nrmjHh6eSD1ZAlMciS7OJO1GTL+GsX5gpt5WwTZ7HPyi4icTr5Lj4gBCRZCJAyO0Hnx5KyBoImUwQGOa03khC1WcrDYhHSB+wsDsuNhQ3FJr2PMNicqgG0hRaIXKFbc8neraCgONmzsAIx7U2X8nr4IHe+0iB74r0LUViGHb8Mht84GHBny8RF48Et64yn87eTLzP/cMkFYxOF5tLqyo+q0NmfLKB5d29Rm/SNIqc5J2960qcMc07WHzTUocW3hlYxGW/RMVWM38mVAVe/JpFT6TI9iV/k8TueW5ZG9mNedO7OkNncCvhQJO86VQ5aePYOSTDhSkzrF1lkyZHl3uvvxILDFBQg1a1/BC1dwk00Q5crzfzq509ginDYEEenF5yV/vnkkFPUs/nRWI2P/FuKD+/YWXwr/iA/P4Bbr3DWEJJP3ppAPPcgAFWDyc71C8YLGp3pnfEkhiwPgENiD18CpwWNRV7SwjlJ3nbx244WvqyQS52huOknU+7m9Wh12T0Z47r/bp8GeKX2FamvVfsa2rdrENe3uWvnjfNKChp1RmLRXOPabP6JKboOPH8ktAcGXwGXu7+4Qffo3O8VDoqu8p9KpYlQbO1qODMW6rwQUbyx8g5fIwYWEiILnNdj5EXQqhBzOmxLETq6ZH+Z3XMMnU+1kEO2jI="
 env:
   global:
   - PGPORT=5433
