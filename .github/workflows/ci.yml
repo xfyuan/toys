@@ -35,7 +35,7 @@ jobs:
         image: postgres:11
         env:
           POSTGRES_DB: toys_test
-          POSTGRES_USER: xfyuan
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         options: >-
           --health-cmd pg_isready
@@ -67,7 +67,7 @@ jobs:
         env:
           RAILS_ENV: test
           PGHOST: localhost
-          PGUSER: xfyuan
+          PGUSER: postgres
           PGPASSWORD: postgres
           PGPORT: 5432
         run: |
