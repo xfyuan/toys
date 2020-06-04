@@ -34,7 +34,6 @@ jobs:
       postgres:
         image: postgres:11
         env:
-          POSTGRES_USER: toys
           POSTGRES_DB: toys_test
           POSTGRES_PASSWORD: ""
         ports: ["5432:5432"]
@@ -60,8 +59,8 @@ jobs:
       - name: Setup test database
         env:
           RAILS_ENV: test
-          PGHOST: postgres
-          PGUSER: toys
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: 5432
         run: |
           bundle exe rails db:setup
 
