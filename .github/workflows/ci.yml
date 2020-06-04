@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:11-alpine
+        image: postgres:11
         env:
           POSTGRES_DB: toys_test
           POSTGRES_PASSWORD: postgres
@@ -66,6 +66,8 @@ jobs:
         env:
           RAILS_ENV: test
           POSTGRES_HOST: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
           POSTGRES_PORT: 5432
         run: |
           bundle exe rails db:setup
