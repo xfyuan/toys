@@ -35,7 +35,8 @@ jobs:
         image: postgres:11
         env:
           POSTGRES_DB: toys_test
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: xfyuan
+          POSTGRES_PASSWORD: ""
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -66,8 +67,8 @@ jobs:
         env:
           RAILS_ENV: test
           PGHOST: localhost
-          PGUSER: postgres
-          PGPASSWORD: postgres
+          PGUSER: xfyuan
+          PGPASSWORD:
           PGPORT: 5432
         run: |
           bundle exe rails db:setup
