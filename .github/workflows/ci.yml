@@ -60,10 +60,10 @@ jobs:
       - name: Setup test database
         env:
           RAILS_ENV: test
-          PGHOST: localhost
+          PGHOST: postgres
           PGUSER: toys
         run: |
-          bin/rails db:setup
+          bundle exe rails db:setup
 
       - name: Run tests
         run: bundle exec rspec
